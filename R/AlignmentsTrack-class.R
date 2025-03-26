@@ -517,14 +517,20 @@ setMethod("drawAxis", signature(GdObject = "AlignmentsTrack"), function(GdObject
         covSpace <- 0
     }
     if ("sashimi" %in% type) {
+        global_ymin <- -100
+        global_ymax <- 0
         sash <- .dpOrDefault(GdObject, ".__sashimi", list(x = numeric(), y = numeric(), id = integer(), score = numeric()))
-        yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1, 0)
-        ylim <- if (length(sash$y)) c(-max(sash$y), yscale[1] + max(sash$y)) else c(-1, 0)
+        # yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1, 0)
+        yscale <- c(global_ymin * 1.05, global_ymax)
+        # ylim <- if (length(sash$y)) c(-max(sash$y), yscale[1] + max(sash$y)) else c(-1, 0)
+        ylim <- c(global_ymin * 1.05, global_ymax)
         hSpaceAvail <- vpLocation()$isize["width"] / 6
         col <- .dpOrDefault(GdObject, "col.axis", "white")
         acex <- .dpOrDefault(GdObject, "cex.axis")
         acol <- .dpOrDefault(GdObject, "col.axis", "white")
-        labs <- if (length(sash$score)) pretty(c(1, sash$score)) else pretty(c(1, .dpOrDefault(GdObject, ".__sashimiScore", 10)))
+        # labs <- if (length(sash$score)) pretty(c(1, sash$score)) else pretty(c(1, .dpOrDefault(GdObject, ".__sashimiScore", 10)))
+        # at <- seq(ylim[1], ylim[2], length.out = length(labs))
+        labs <- pretty(c(1, abs(global_ymin)))
         at <- seq(ylim[1], ylim[2], length.out = length(labs))
         sashHeight <- .dpOrDefault(GdObject, ".__sashimiHeight", c(npc = 0, points = 0))
         sashSpace <- .dpOrDefault(GdObject, ".__sashimiSpace", 0)
