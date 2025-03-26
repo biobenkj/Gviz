@@ -2651,7 +2651,7 @@ availableDefaultMapping <- function(file, trackType) {
         }
         ## scale the score to lwd.max
         # assume specific transformation for STORM paper
-        juns$scaled <- (lwd.max - 1) / pmax((max(juns$score) - min(c(1, juns$score))), 1) * (juns$score - max(juns$score)) + lwd.max
+        juns$scaled <- (lwd.max - 1) / pmax((100 - min(c(1, juns$score))), 1) * (juns$score - 100) + lwd.max
         
         ## create list
         juns <- list(
