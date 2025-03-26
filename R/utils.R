@@ -2631,6 +2631,7 @@ availableDefaultMapping <- function(file, trackType) {
         ov <- findOverlaps(juns, reduce(juns, min.gapwidth = 0L))
         ov <- split(queryHits(ov), subjectHits(ov))
         juns$y <- as.integer(unlist(lapply(ov, order)))
+        
         ## apply data transformation if one is set up
         if (is.list(trans)) {
             trans <- trans[[1]]
@@ -2651,6 +2652,11 @@ availableDefaultMapping <- function(file, trackType) {
         ## scale the score to lwd.max
         # assume specific transformation for STORM paper
         juns$scaled <- (lwd.max - 1) / pmax((max(juns$score) - min(c(1, juns$score))), 1) * (juns$score - max(juns$score)) + lwd.max
+        # rescale the y axis
+        if (length(juns$y) > 0) {
+            y_max <- max(juns$y)
+            juns$y <- juns$y / y_max * 100
+        }
         ## create list
         juns <- list(
             x = as.numeric(rbind(
